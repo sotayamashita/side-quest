@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" class="h-full bg-gray-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Assistant Settings</title>
+    <link href="output.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <h1>Chat Assistant Settings</h1>
+    <div id="extension-id-info" class="mb-4"></div>
+    <form id="settings-form">
+      <section>
+        <h2>Ollama Settings</h2>
+        <div class="mb-4">
+          <p>
+            To use this extension with Ollama, start Ollama with the following
+            command:
+          </p>
+          <pre id="ollama-start-command" class="p-2 rounded">fsdfsdaf</pre>
+        </div>
+        <div>
+          <div>
+            <label for="ollama-url">Ollama URL:</label>
+            <input
+              type="url"
+              id="ollama-url"
+              name="ollama-url"
+              value="http://localhost:11434"
+            />
+          </div>
+          <button type="button" id="verify-ollama">Verify</button>
+        </div>
+        <div id="verification-result" class="hidden whitespace-pre-wrap"></div>
+        <div id="model-list" class="mt-4">
+          <h3>Available Models:</h3>
+          <ul id="available-models"></ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Default Model Settings</h2>
+        <div>
+          <label for="default-model">Default Model:</label>
+          <select id="default-model" name="default-model"></select>
+        </div>
+      </section>
+
+      <div>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+    <script src="options.js"></script>
+  </body>
+</html>

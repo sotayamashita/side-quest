@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Window</title>
+    <link href="output.css" rel="stylesheet" />
+</head>
+
+<body class="font-sans m-0 p-0 h-screen flex flex-col bg-white text-gray-800">
+    <div id="chat-container" class="flex flex-col w-full h-full">
+        <header class="fixed top-0 left-0 right-0 bg-gray-100 z-10 border-b border-gray-300">
+            <div class="flex items-center border-b border-gray-300 p-2">
+                <select name="model" id="model-select"
+                    class="bg-white text-gray-800 p-1 rounded border border-gray-300 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 text-xs">
+                    <!-- Model options will be populated dynamically -->
+                </select>
+                <div class="ml-auto flex items-center">
+                    <button id="settings-icon" title="Settings"
+                        class="bg-white px-3 py-1 rounded border border-gray-300 hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 text-xs">
+                        Settings
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-2 flex items-center over">
+                <img id="page-icon" src="" alt="Page Icon" class="w-4 h-4 flex-shrink-0" style="margin-right: 8px;"
+                    onerror="this.onerror=null; this.src='fallback-icon.png';" />
+                <div id="page-text" class="flex-1 min-w-0 overflow-hidden">
+                    <h3 id="page-title" class="m-0 text-sm font-bold text-gray-800 whitespace-nowrap overflow-hidden">
+                    </h3>
+                    <p id="page-url"
+                        class="mt-0.5 text-xs text-gray-600 cursor-pointer hover:underline whitespace-nowrap overflow-hidden">
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <main class="overflow-y-auto flex flex-col flex-grow mt-[6.5rem]">
+            <div id="chat-messages" class="overflow-y-auto p-2 flex flex-col"></div>
+            <div id="chat-input-container" class="bg-white p-2 flex flex-col">
+                <div class="bg-gray-100 rounded-md border border-gray-300">
+                    <div id="quote-container" class="hidden mb-2">
+                        <p id="quote-text" class="text-sm text-gray-700 p-2"></p>
+                    </div>
+                    <div class="bg-gray-100 p-2 rounded-md">
+                        <textarea id="chat-input" placeholder="Ask anything" title="⌘+Enter to send"
+                            class="w-full p-2 resize-none min-h-[20px] max-h-[150px] overflow-y-auto bg-gray-100 text-gray-800 text-sm mb-1 placeholder-gray-500 focus:outline-none focus:ring-0 border-none"></textarea>
+                        <button id="send-button" title="Send"
+                            class="bg-white border ml-auto border-gray-300 rounded cursor-pointer p-2 flex items-center justify-center whitespace-nowrap self-end hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                            <span class="text-xs text-right">Ask (⌘ + Enter)</span>
+                        </button>
+                    </div>
+
+                </div>
+        </main>
+    </div>
+    <script src="chat.js"></script>
+</body>
+
+</html>
