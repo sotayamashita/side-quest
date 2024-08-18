@@ -171,13 +171,14 @@ async function handleSendMessage(request, sender) {
   try {
     const response = await callLLM(request.messages, request.model);
     console.log("Response received from callLLM:", response);
-    chrome.tabs.sendMessage(sender.tab.id, {
+    // Send message directly to the chat window
+    chrome.tabs.sendMessage(chatWindowTabId, {
       action: "chatComplete",
       result: response.response,
     });
   } catch (error) {
     console.error("LLM call error:", error);
-    chrome.tabs.sendMessage(sender.tab.id, {
+    chrome.tabs.sendMessage(chatWindowTabId, {
       action: "chatError",
       error: error.message,
     });
@@ -354,4 +355,47 @@ chrome.windows.onRemoved.addListener(function (removedWindowId) {
       }
     });
   }
+});
+
+async function updateNetRequestRules(ollamaUrl) {
+  const url = new URL(ollamaUrl);
+  const rules = [{
+    id: 1,
+    priority: 1,
+    action: {
+      type: 'modifyHeaders',
+      requestHeaders: [
+        {
+          header: 'Origin',
+          operation: 'set',
+          value: url.origin
+        }
+      ]
+    },
+    condition: {
+      urlFilter: url.origin + '/*',
+      resourceTypes: ['xmlhttprequest']
+    }
+  }];
+
+  await chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [1],
+    addRules: rules
+  });
+}
+
+// Ollamaの設定が変更されたときにルールを更新
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'sync' && changes.ollamaUrl) {
+    updateNetRequestRules(changes.ollamaUrl.newValue);
+  }
+});
+
+// 拡張機能が起動したときにも現在の設定でルールを更新
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get(['ollamaUrl'], (result) => {
+    if (result.ollamaUrl) {
+      updateNetRequestRules(result.ollamaUrl);
+    }
+  });
 });

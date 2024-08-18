@@ -3,7 +3,24 @@
   "name": "Chat Assistant",
   "version": "1.0",
   "description": "Provides a chat assistant related to web pages.",
-  "permissions": ["activeTab", "tabs", "contextMenus", "storage"],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "contextMenus",
+    "storage",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "http://localhost:11434/api/tags",
+    "http://localhost:11434/api/generate"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
   "background": {
     "service_worker": "background.js"
   },
