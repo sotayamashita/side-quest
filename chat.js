@@ -176,32 +176,6 @@ function initializeChatWindow() {
   });
 }
 
-function applyTheme(theme) {
-  document.body.classList.remove("light-theme", "dark-theme");
-  const themeClass =
-    theme === "system"
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
-      : theme;
-  document.body.classList.add(`${themeClass}-theme`);
-}
-
-function initTheme() {
-  chrome.storage.sync.get(["theme"], (result) => {
-    if (chrome.runtime.lastError) {
-      console.error(
-        "Error occurred while retrieving settings:",
-        chrome.runtime.lastError,
-      );
-      return;
-    }
-    const theme = result.theme || "system";
-    applyTheme(theme);
-    console.log("Current theme setting:", theme);
-  });
-}
-
 function setupEventListeners() {
   DOM.sendButton.addEventListener("click", sendMessage);
   DOM.chatInput.addEventListener("keydown", (e) => {
@@ -300,7 +274,6 @@ function adjustTextareaHeight(textarea) {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Chat window DOM fully loaded and parsed");
   initializeChatWindow();
-  initTheme();
   setupEventListeners();
 });
 
@@ -311,13 +284,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action === "completeResponse") {
     chatMessages.push({ role: "assistant", content: currentAssistantMessage });
     currentAssistantMessage = "";
-  }
-});
-
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  if (namespace === "sync" && changes.theme) {
-    console.log("Theme setting changed:", changes.theme.newValue);
-    applyTheme(changes.theme.newValue);
   }
 });
 
